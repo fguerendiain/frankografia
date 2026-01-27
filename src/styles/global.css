@@ -1,0 +1,378 @@
+/* ───────────────── THEME VARIABLES ───────────────── */
+
+:root {
+  --bg: #ffffff;
+  --text: #111111;
+  --muted: #666666;
+  --surface: #f5f5f5;
+  --border: #e0e0e0;
+
+  --hero-bg: #111111;
+  --hero-text: #ffffff;
+
+  /* Spacing scale (editorial) */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 6rem;
+}
+
+:root[data-theme="dark"] {
+  --bg: #0f0f0f;
+  --text: #eaeaea;
+  --muted: #9a9a9a;
+  --surface: #1a1a1a;
+  --border: #2a2a2a;
+
+  --hero-bg: #000000;
+  --hero-text: #ffffff;
+}
+
+:root[data-theme="dark"] #theme-toggle {
+  background: color-mix(in srgb, var(--surface) 85%, transparent);
+  border-color: var(--border);
+}
+
+/* ───────────────── RESET ───────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  transition:
+    background 200ms ease,
+    color 200ms ease;
+  line-height: 1.55;
+}
+
+/* ───────────────── THEME TOGGLE ───────────────── */
+
+#theme-toggle {
+  position: fixed;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  z-index: 2000;
+
+  width: 44px;
+  height: 44px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: color-mix(in srgb, var(--bg) 80%, transparent);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+
+  color: var(--text);
+  cursor: pointer;
+
+  font-size: 1rem;
+  line-height: 1;
+
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  opacity: 0.85;
+  transition:
+    opacity 200ms ease,
+    background 200ms ease,
+    border-color 200ms ease,
+    transform 200ms ease;
+}
+
+
+#theme-toggle:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+#theme-toggle:focus-visible {
+  outline: none;
+  border-color: var(--text);
+}
+
+
+/* ───────────────── HERO ───────────────── */
+
+.hero {
+  height: 100vh;
+  background: var(--hero-bg);
+  color: var(--hero-text);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  gap: var(--space-sm);
+}
+
+.hero-logo {
+  width: 150px;
+  height: auto;
+  color: var(--hero-text);
+  opacity: 0.9;
+  margin-bottom: 0.25rem;
+  animation: fadeUp 600ms ease both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 0.9;
+    transform: translateY(0);
+  }
+}
+
+.hero h1 {
+  font-family: "Playfair Display", serif;
+  margin: 0;
+  font-size: clamp(2.8rem, 6vw, 4.6rem);
+  letter-spacing: 0.12em;
+}
+
+.hero p {
+  margin: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+/* ───────────────── GALLERY ───────────────── */
+
+.gallery {
+  padding: var(--space-xl) var(--space-md);
+}
+
+.gallery .grid {
+  max-width: 1200px;
+  margin-inline: auto;
+}
+
+/* FILTERS */
+
+.filters {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+  justify-content: center;
+}
+
+.filters button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.filters button.active {
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* GRID */
+
+.grid {
+  display: grid;
+  grid-auto-flow: dense;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-sm);
+  justify-content: center;
+}
+
+/* PHOTO ITEM */
+
+.photo {
+  position: relative;
+  background: var(--surface);
+  overflow: hidden;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 500ms ease,
+    transform 500ms ease;
+}
+
+.photo.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.photo::before {
+  content: "";
+  display: block;
+  padding-top: 66%;
+}
+
+.photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* SPANS */
+
+.photo.span-2 {
+  grid-column: span 2;
+}
+
+.photo.span-1 {
+  grid-column: span 1;
+}
+
+/* RESPONSIVE GALLERY */
+
+@media (max-width: 900px) {
+  .gallery {
+    padding: var(--space-lg) var(--space-sm);
+  }
+
+  .filters {
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+  }
+
+  .grid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: var(--space-sm);
+  }
+
+  .photo.span-1,
+  .photo.span-2 {
+    grid-column: span 6;
+  }
+}
+
+/* ───────────────── ABOUT (EDITORIAL) ───────────────── */
+
+.about {
+  padding: var(--space-xl) var(--space-md);
+  background: var(--surface);
+}
+
+.about-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: var(--space-lg);
+  align-items: center;
+}
+
+.about-image {
+  position: relative;
+}
+
+.about-image img {
+  width: 70%;
+  height: auto;
+  display: block;
+
+  border-radius: 16px;
+
+  /* Bordes que se funden */
+  box-shadow:
+    0 0 0 1px var(--surface),
+    0 20px 60px rgba(0, 0, 0, 0.15);
+
+  /* Nada de filtros destructivos */
+}
+
+.about-text p {
+  margin: 0;
+  font-family: "Playfair Display", serif;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  letter-spacing: 0.02em;
+}
+
+/* RESPONSIVE ABOUT */
+
+@media (max-width: 900px) {
+  .about-inner {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  .about-image {
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .about-text {
+    text-align: center;
+  }
+}
+
+/* ───────────────── FOOTER ───────────────── */
+
+.footer {
+  padding: var(--space-lg) var(--space-md);
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.footer-instagram {
+  opacity: 0.45;
+}
+
+.footer a {
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+
+  color: var(--text);
+  text-decoration: none;
+  opacity: 0.6;
+}
+
+.footer a:hover {
+  opacity: 1;
+}
+
+/* ───────────────── MODAL ───────────────── */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal img {
+  max-width: 95vw;
+  max-height: 95vh;
+  object-fit: contain;
+}

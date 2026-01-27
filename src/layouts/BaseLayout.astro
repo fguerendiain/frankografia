@@ -1,0 +1,68 @@
+---
+import "../styles/global.css";
+
+const {
+  title = "frankografía — photography",
+  description = "Portfolio de fotografía de Franco. Retrato, paisaje y wildlife.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- THEME BOOTSTRAP (ESTO ES LA CLAVE) -->
+    <script is:inline>
+      try {
+        const stored = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches;
+        const theme = stored || (prefersDark ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      } catch (e) {}
+    </script>
+  </head>
+
+  <body>
+    <button id="theme-toggle" aria-label="Toggle theme">☾</button>
+
+    <slot />
+
+    <script is:inline>
+      const btn = document.getElementById("theme-toggle");
+
+      function updateIcon(theme) {
+        btn.textContent = theme === "dark" ? "☀" : "☾";
+      }
+
+      const initial = document.documentElement.getAttribute("data-theme");
+      updateIcon(initial);
+
+      btn.addEventListener("click", () => {
+        const current = document.documentElement.getAttribute("data-theme");
+        const next = current === "dark" ? "light" : "dark";
+        document.documentElement.setAttribute("data-theme", next);
+        localStorage.setItem("theme", next);
+        updateIcon(next);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,65 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Gallery from "../components/Gallery";
+import { loadPhotos } from "../lib/loadPhotos";
+import LogoIsotipo from "../assets/logo_isotipo.svg";
+import AboutPhoto from "../assets/avatar.jpg";
+
+const photos = await loadPhotos();
+const first = photos[0];
+---
+
+<BaseLayout>
+  <head>
+    <link
+      rel="preload"
+      as="image"
+      href={first.src}
+      imagesrcset={first.srcSet}
+      imagesizes={first.sizes}
+    />
+  </head>
+
+  <section class="hero">
+    <LogoIsotipo class="hero-logo" />
+    <h1>frankografia</h1>
+    <p>photography</p>
+  </section>
+
+  <Gallery photos={photos} client:visible />
+
+  <section class="about">
+    <div class="about-inner">
+      <div class="about-image">
+        <img
+          src={AboutPhoto.src}
+          alt="Retrato de Franco"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+
+      <div class="about-text">
+        <p>
+          Trabajo con luz natural y escenas reales, con una mirada documental.
+          Me interesa el retrato y la fotografía de calle como formas de
+          capturar momentos auténticos, emociones y gestos cotidianos. A través
+          de la fotografía busco contar historias simples y registrar la
+          atmósfera de lo que me rodea.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <a href="mailto:frankografia@gmail.com"> frankografia@gmail.com </a>
+    <a
+      href="https://www.instagram.com/frankografia"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="footer-instagram"
+    >
+      instagram / frankografia
+    </a>
+  </footer>
+</BaseLayout>
